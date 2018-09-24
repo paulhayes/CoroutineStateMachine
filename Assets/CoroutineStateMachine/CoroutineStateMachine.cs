@@ -29,7 +29,6 @@ public class CoroutineStateMachine : MonoBehaviour
     {
         while (true)
         {
-			Debug.Log("Run");
             OnStateChanged(nextState);
             currentState = nextState;
             currentStateIndex = System.Array.IndexOf(states, currentState);

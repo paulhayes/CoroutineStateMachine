@@ -12,28 +12,36 @@ public abstract class CoroutineState : MonoBehaviour
     {
         this.stateMachine = stateMachine;
         exit = false;
-		yield return StateBegin();
+        if( this is IStateBeginRoutine ){
+            yield return (this as IStateBeginRoutine).StateBegin();
+        }
+        if( this is IStateBeginCallback ){
+            (this as IStateBeginCallback).StateBegin();
+        }
+        
         while (!exit){
             StateUpdate(stateMachine);
             yield return null;
         }
-		yield return StateEnd();
+
+
+        if( this is IStateEndRoutine ){
+            yield return (this as IStateEndRoutine).StateEnd();
+        }
+        if( this is IStateEndCallback ){
+            (this as IStateEndCallback).StateEnd();
+        }
+        
     }
 
-	public virtual IEnumerator StateBegin()
-	{
-		yield break;
-	}
+
 
     public virtual void StateUpdate(CoroutineStateMachine stateMachine)
     {
 
     }
 
-	public virtual IEnumerator StateEnd()
-	{
-		yield break;
-	}
+
 
     public void Exit()
     {
